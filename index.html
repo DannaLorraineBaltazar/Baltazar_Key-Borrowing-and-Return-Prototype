@@ -1,16 +1,565 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Key Borrowing and Return System</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Borrowing and Return System</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div id="app"></div>
-    <script src="app.js"></script>
-</body>
 
+  <div id="authArea">
+
+    <!-- LOGIN -->
+    <section class="screen auth-page" id="screen-login">
+      <div class="auth-card">
+        <div class="auth-left">
+          <span class="logo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.6 7.6a5.5 5.5 0 1 1-7.8 7.8 5.5 5.5 0 0 1 7.8-7.8zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </span>
+          <h1>Key Borrowing and Return System</h1>
+          <p>Track facility keys, borrowers, and return schedules in one simple, organized place.</p>
+        </div>
+
+        <div class="auth-right">
+          <h2>Login to your account.</h2>
+          <p class="subtitle">Welcome back! Please enter your details.</p>
+
+          <form id="loginForm">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" placeholder="name@example.com" required>
+
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+
+            <div class="row-between">
+              <label><input type="checkbox"> Remember Me</label>
+              <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn dark full">Log In</button>
+          </form>
+
+          <p class="switch">Don't have an account? <a href="#" data-goto="signup">Sign Up</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGN UP -->
+    <section class="screen auth-page" id="screen-signup">
+      <div class="auth-card">
+        <div class="auth-left">
+          <span class="logo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.6 7.6a5.5 5.5 0 1 1-7.8 7.8 5.5 5.5 0 0 1 7.8-7.8zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </span>
+          <h1>Key Borrowing and Return System</h1>
+          <p>Track facility keys, borrowers, and return schedules in one simple, organized place.</p>
+        </div>
+
+        <div class="auth-right">
+          <h2>Create your account.</h2>
+          <p class="subtitle">Sign up to start managing facility keys.</p>
+
+          <form id="signupForm">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
+
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" placeholder="name@example.com" required>
+
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" placeholder="At least 8 characters" minlength="8" required>
+
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            <span class="error" id="confirmError"></span>
+
+            <div style="height: 18px;"></div>
+            <button type="submit" class="btn dark full">Sign Up</button>
+          </form>
+
+          <p class="switch">Already have an account? <a href="#" data-goto="login">Log In</a></p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="layout hidden" id="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.6 7.6a5.5 5.5 0 1 1-7.8 7.8 5.5 5.5 0 0 1 7.8-7.8zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </span>
+        <span>Key Borrowing<br>and Return</span>
+      </div>
+      <nav>
+        <a href="#" data-goto="dashboard" data-nav="dashboard">Dashboard</a>
+        <a href="#" data-goto="records" data-nav="records">Keys / Records</a>
+        <a href="#" data-goto="add" data-nav="add">Add Record</a>
+        <a href="#">Facilities</a>
+        <a href="#">Users</a>
+      </nav>
+      <nav class="bottom">
+        <a href="#">Settings</a>
+        <a href="#" data-goto="login">Sign Out</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <section class="screen" id="screen-dashboard">
+        <div class="page-header">
+          <div>
+            <h1>Key Borrowing and Return System</h1>
+            <p class="subtitle">Overview of borrowed keys and their return status.</p>
+          </div>
+          <div class="header-right">
+            <div class="admin"><span class="avatar">A</span> Admin</div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="card">
+            <strong>11</strong>
+            <span>Total Keys Registered</span>
+            <a href="#" data-goto="records">6 Available →</a>
+          </div>
+          <div class="card">
+            <strong>6</strong>
+            <span>Total Borrowing Records</span>
+            <a href="#" data-goto="records">View All →</a>
+          </div>
+          <div class="card">
+            <strong>4</strong>
+            <span>Currently Borrowed</span>
+            <a href="#" data-goto="records">View All →</a>
+          </div>
+          <div class="card">
+            <strong>1</strong>
+            <span>Overdue Keys</span>
+            <a href="#" data-goto="records">View All →</a>
+          </div>
+          <div class="card">
+            <strong>1</strong>
+            <span>Returned Keys</span>
+            <a href="#" data-goto="records">View All →</a>
+          </div>
+        </div>
+
+        <div class="two-columns">
+          <div class="card">
+            <h2>Recent Records</h2>
+
+            <div class="recent-item" data-code="KH-004">
+              <div><b>EMC Lab Key</b><small>Moira Cielo F. Tendencia · EMC Laboratory</small></div>
+              <span class="badge borrowed">Borrowed</span>
+              <a class="btn white small" href="#" data-goto="view">View</a>
+            </div>
+            <div class="recent-item" data-code="KH-005">
+              <div><b>IT Laboratory Key</b><small>Xandra T. Romero · IT Laboratory</small></div>
+              <span class="badge borrowed">Borrowed</span>
+              <a class="btn white small" href="#" data-goto="view">View</a>
+            </div>
+            <div class="recent-item" data-code="KH-003">
+              <div><b>Sound Production Lab Key</b><small>Andrea L. Alonzo · Sound Production Laboratory</small></div>
+              <span class="badge returned">Returned</span>
+              <a class="btn white small" href="#" data-goto="view">View</a>
+            </div>
+            <div class="recent-item" data-code="KH-001">
+              <div><b>SIM1 Key</b><small>Sophia Yzabel V. Padua · Simulation Room 1</small></div>
+              <span class="badge borrowed">Borrowed</span>
+              <a class="btn white small" href="#" data-goto="view">View</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Records by Status</h2>
+
+            <div class="bar-row">
+              <span class="label">Borrowed</span>
+              <div class="bar"><div style="width: 67%; background: #1d5fe0;"></div></div>
+              <b>4</b>
+            </div>
+            <div class="bar-row">
+              <span class="label">Overdue</span>
+              <div class="bar"><div style="width: 17%; background: #e5484d;"></div></div>
+              <b>1</b>
+            </div>
+            <div class="bar-row">
+              <span class="label">Returned</span>
+              <div class="bar"><div style="width: 17%; background: #1f9d63;"></div></div>
+              <b>1</b>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECORD LIST -->
+      <section class="screen" id="screen-records">
+        <div class="page-header">
+          <div>
+            <h1>Key Borrowing Records</h1>
+            <p class="subtitle">Search, review, and manage every borrowed key.</p>
+          </div>
+          <div class="header-right">
+            <a class="btn" href="#" data-goto="add">+ Add Record</a>
+            <div class="admin"><span class="avatar">A</span> Admin</div>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <input type="search" id="searchBox" placeholder="Search key, code, facility, or borrower.">
+          <select id="statusFilter">
+            <option value="all">All Statuses</option>
+            <option value="borrowed">Borrowed</option>
+            <option value="overdue">Overdue</option>
+            <option value="returned">Returned</option>
+          </select>
+        </div>
+
+        <div class="card table-card" style="padding: 0;">
+          <table>
+            <thead>
+              <tr>
+                <th>KEY / CODE</th>
+                <th>FACILITY</th>
+                <th>BORROWER</th>
+                <th>BORROWED</th>
+                <th>EXPECTED RETURN</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-code="KH-004">
+                <td><b>EMC Lab Key</b><small>KH-004</small></td>
+                <td>EMC Laboratory</td>
+                <td>Moira Cielo F. Tendencia</td>
+                <td>Oct 24, 2026<small>10:30 AM</small></td>
+                <td>Oct 24, 2026<small>12:00 PM</small></td>
+                <td><span class="badge borrowed">Borrowed</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr data-code="KH-005">
+                <td><b>IT Laboratory Key</b><small>KH-005</small></td>
+                <td>IT Laboratory</td>
+                <td>Xandra T. Romero</td>
+                <td>Oct 24, 2026<small>9:30 AM</small></td>
+                <td>Oct 24, 2026<small>12:00 PM</small></td>
+                <td><span class="badge borrowed">Borrowed</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr data-code="KH-003">
+                <td><b>Sound Production Lab Key</b><small>KH-003</small></td>
+                <td>Sound Production Laboratory</td>
+                <td>Andrea L. Alonzo</td>
+                <td>Oct 24, 2026<small>9:30 AM</small></td>
+                <td>Oct 24, 2026<small>2:15 PM</small></td>
+                <td><span class="badge returned">Returned</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr data-code="KH-001">
+                <td><b>SIM1 Key</b><small>KH-001</small></td>
+                <td>Simulation Room 1</td>
+                <td>Sophia Yzabel V. Padua</td>
+                <td>Oct 24, 2026<small>8:00 AM</small></td>
+                <td>Oct 24, 2026<small>10:30 AM</small></td>
+                <td><span class="badge borrowed">Borrowed</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr data-code="KH-006">
+                <td><b>CLAB 1 Key</b><small>KH-006</small></td>
+                <td>Computer Laboratory 1</td>
+                <td>Karl Lorenz B. Baltazar</td>
+                <td>Oct 24, 2026<small>7:00 AM</small></td>
+                <td>Oct 24, 2026<small>12:00 PM</small></td>
+                <td><span class="badge borrowed">Borrowed</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr data-code="KH-010">
+                <td><b>CLAB 5 Key</b><small>KH-010</small></td>
+                <td>Computer Laboratory 5</td>
+                <td>Rio H. Vidal</td>
+                <td>Oct 24, 2026<small>7:00 AM</small></td>
+                <td>Oct 24, 2026<small>10:00 AM</small></td>
+                <td><span class="badge overdue">Overdue</span></td>
+                <td class="actions">
+                  <a class="btn white small" href="#" data-goto="view">View</a>
+                  <a class="btn white small" href="#" data-goto="edit">Edit</a>
+                  <button class="btn red small delete-button">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ADD RECORD -->
+      <section class="screen" id="screen-add">
+        <div class="page-header">
+          <div>
+            <h1>Add Key Borrowing Record</h1>
+            <p class="subtitle">Enter the details below to create a new record.</p>
+          </div>
+          <div class="header-right">
+            <div class="admin"><span class="avatar">A</span> Admin</div>
+          </div>
+        </div>
+
+        <a class="btn white small back" href="#" data-goto="records">‹ Back</a>
+
+        <div class="card">
+          <form class="record-form" id="addForm">
+            <div class="form-grid">
+
+              <div>
+                <label for="addKey">Key Name *</label>
+                <select class="key-select" id="addKey" required>
+                  <option value="">Select Key</option>
+                  <option value="1" data-code="KH-001">SIM1 Key</option>
+                  <option value="2" data-code="KH-002">SIM2 Key</option>
+                  <option value="3" data-code="KH-003">Sound Production Lab Key</option>
+                  <option value="4" data-code="KH-004">EMC Lab Key</option>
+                  <option value="5" data-code="KH-005">IT Laboratory Key</option>
+                  <option value="6" data-code="KH-006">CLAB 1 Key</option>
+                  <option value="7" data-code="KH-007">CLAB 2 Key</option>
+                  <option value="8" data-code="KH-008">CLAB 3 Key</option>
+                  <option value="9" data-code="KH-009">CLAB 4 Key</option>
+                  <option value="10" data-code="KH-010">CLAB 5 Key</option>
+                  <option value="11" data-code="KH-011">CLAB 6 Key</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="addCode">Key Code / Tag</label>
+                <input class="key-code" type="text" id="addCode" value="KH-001" readonly>
+              </div>
+
+              <div>
+                <label for="addRoom">Facility / Room *</label>
+                <select class="room-select" id="addRoom" required>
+                  <option value="">Select Facility</option>
+                  <option value="1" data-code="KH-001">Simulation Room 1</option>
+                  <option value="2" data-code="KH-002">Simulation Room 2</option>
+                  <option value="3" data-code="KH-003">Sound Production Laboratory</option>
+                  <option value="4" data-code="KH-004">EMC Laboratory</option>
+                  <option value="5" data-code="KH-005">IT Laboratory</option>
+                  <option value="6" data-code="KH-006">Computer Laboratory 1</option>
+                  <option value="7" data-code="KH-007">Computer Laboratory 2</option>
+                  <option value="8" data-code="KH-008">Computer Laboratory 3</option>
+                  <option value="9" data-code="KH-009">Computer Laboratory 4</option>
+                  <option value="10" data-code="KH-010">Computer Laboratory 5</option>
+                  <option value="11" data-code="KH-011">Computer Laboratory 6</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="addName">Borrower Full Name *</label>
+                <input type="text" id="addName" placeholder="Enter Borrower Name" required>
+              </div>
+
+              <div>
+                <label for="addId">Borrower ID</label>
+                <input type="text" id="addId" placeholder="Enter ID Number">
+              </div>
+
+              <div>
+                <label for="addBorrowed">Borrowed Date and Time *</label>
+                <input class="borrowed-time" type="datetime-local" id="addBorrowed" value="2026-10-24T10:23" required>
+              </div>
+
+              <div>
+                <label for="addExpected">Expected Return Date and Time *</label>
+                <input class="expected-time" type="datetime-local" id="addExpected" value="2026-10-24T14:23" required>
+                <span class="error"></span>
+              </div>
+
+              <div class="wide">
+                <label for="addNotes">Notes</label>
+                <textarea id="addNotes" rows="4" placeholder="Optional notes about this borrowing record."></textarea>
+              </div>
+
+            </div>
+
+            <div class="button-row">
+              <a class="btn white" href="#" data-goto="records">Cancel</a>
+              <button type="submit" class="btn">Save Record</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW RECORD -->
+      <section class="screen" id="screen-view">
+        <div class="page-header">
+          <div>
+            <h1>Record Details</h1>
+            <p class="subtitle" id="viewSubtitle"></p>
+          </div>
+          <div class="header-right">
+            <div class="admin"><span class="avatar">A</span> Admin</div>
+          </div>
+        </div>
+
+        <a class="btn white small back" href="#" data-goto="records">‹ Back</a>
+
+        <div class="card">
+          <dl class="details" style="margin: 0;">
+            <div><dt>Key Name</dt><dd id="viewKey"></dd></div>
+            <div><dt>Key Code / Tag</dt><dd id="viewCode"></dd></div>
+            <div><dt>Facility / Room</dt><dd id="viewFacility"></dd></div>
+            <div><dt>Borrower</dt><dd id="viewBorrower"></dd></div>
+            <div><dt>Borrower ID</dt><dd id="viewBorrowerId"></dd></div>
+            <div><dt>Borrowed</dt><dd id="viewBorrowed"></dd></div>
+            <div><dt>Expected Return</dt><dd id="viewExpected"></dd></div>
+            <div><dt>Actual Return</dt><dd id="viewActual"></dd></div>
+            <div><dt>Status</dt><dd id="viewStatus"></dd></div>
+            <div><dt>Notes</dt><dd id="viewNotes"></dd></div>
+          </dl>
+
+          <div class="button-row">
+            <a class="btn" href="#" id="markReturned">Mark as Returned</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDIT RECORD -->
+      <section class="screen" id="screen-edit">
+        <div class="page-header">
+          <div>
+            <h1>Edit Key Borrowing Record</h1>
+            <p class="subtitle">Update the details below.</p>
+          </div>
+          <div class="header-right">
+            <div class="admin"><span class="avatar">A</span> Admin</div>
+          </div>
+        </div>
+
+        <a class="btn white small back" href="#" data-goto="records">‹ Back</a>
+
+        <div class="card">
+          <form class="record-form" id="editForm">
+            <div class="form-grid">
+
+              <div>
+                <label for="editKey">Key Name *</label>
+                <select class="key-select" id="editKey" required>
+                  <option value="">Select Key</option>
+                  <option value="1" data-code="KH-001">SIM1 Key</option>
+                  <option value="2" data-code="KH-002">SIM2 Key</option>
+                  <option value="3" data-code="KH-003">Sound Production Lab Key</option>
+                  <option value="4" data-code="KH-004" selected>EMC Lab Key</option>
+                  <option value="5" data-code="KH-005">IT Laboratory Key</option>
+                  <option value="6" data-code="KH-006">CLAB 1 Key</option>
+                  <option value="7" data-code="KH-007">CLAB 2 Key</option>
+                  <option value="8" data-code="KH-008">CLAB 3 Key</option>
+                  <option value="9" data-code="KH-009">CLAB 4 Key</option>
+                  <option value="10" data-code="KH-010">CLAB 5 Key</option>
+                  <option value="11" data-code="KH-011">CLAB 6 Key</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="editCode">Key Code / Tag</label>
+                <input class="key-code" type="text" id="editCode" value="KH-004" readonly>
+              </div>
+
+              <div>
+                <label for="editRoom">Facility / Room *</label>
+                <select class="room-select" id="editRoom" required>
+                  <option value="">Select Facility</option>
+                  <option value="1" data-code="KH-001">Simulation Room 1</option>
+                  <option value="2" data-code="KH-002">Simulation Room 2</option>
+                  <option value="3" data-code="KH-003">Sound Production Laboratory</option>
+                  <option value="4" data-code="KH-004" selected>EMC Laboratory</option>
+                  <option value="5" data-code="KH-005">IT Laboratory</option>
+                  <option value="6" data-code="KH-006">Computer Laboratory 1</option>
+                  <option value="7" data-code="KH-007">Computer Laboratory 2</option>
+                  <option value="8" data-code="KH-008">Computer Laboratory 3</option>
+                  <option value="9" data-code="KH-009">Computer Laboratory 4</option>
+                  <option value="10" data-code="KH-010">Computer Laboratory 5</option>
+                  <option value="11" data-code="KH-011">Computer Laboratory 6</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="editName">Borrower Full Name *</label>
+                <input type="text" id="editName" value="Moira Cielo F. Tendencia" required>
+              </div>
+
+              <div>
+                <label for="editId">Borrower ID</label>
+                <input type="text" id="editId" value="2023-70184">
+              </div>
+
+              <div>
+                <label for="editBorrowed">Borrowed Date and Time *</label>
+                <input class="borrowed-time" type="datetime-local" id="editBorrowed" value="2026-10-24T10:30" required>
+              </div>
+
+              <div>
+                <label for="editExpected">Expected Return Date and Time *</label>
+                <input class="expected-time" type="datetime-local" id="editExpected" value="2026-10-24T12:00" required>
+                <span class="error"></span>
+              </div>
+
+              <div>
+                <label for="editActual">Actual Return Date and Time</label>
+                <input type="datetime-local" id="editActual">
+              </div>
+
+              <div class="wide">
+                <label for="editNotes">Notes</label>
+                <textarea id="editNotes" rows="4" placeholder="Optional notes about this borrowing record."></textarea>
+              </div>
+
+            </div>
+
+            <div class="button-row">
+              <a class="btn white" href="#" data-goto="records">Cancel</a>
+              <button type="submit" class="btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= DELETE CONFIRMATION DIALOG ================= -->
+  <dialog id="deleteDialog">
+    <h2>Delete this record?</h2>
+    <p>This permanently removes the borrowing record. You can't undo this.</p>
+    <div class="button-row">
+      <button class="btn white" id="cancelDelete">Cancel</button>
+      <button class="btn delete" id="confirmDelete">Delete Record</button>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
 </html>
