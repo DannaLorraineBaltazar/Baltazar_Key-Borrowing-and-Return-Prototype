@@ -62,7 +62,8 @@ document.getElementById("signupForm").addEventListener("submit", function (event
   }
 });
 
-// 4. ADD / EDIT RECORD 
+
+ // 4. ADD / EDIT RECORD
 
 document.querySelectorAll(".record-form").forEach(function (form) {
   var keySelect = form.querySelector(".key-select");
@@ -75,8 +76,13 @@ document.querySelectorAll(".record-form").forEach(function (form) {
     keyCode.value = chosen.dataset.code || "KH-001";
   }
 
-  keySelect.addEventListener("change", function () { syncKey(keySelect, roomSelect); });
-  roomSelect.addEventListener("change", function () { syncKey(roomSelect, keySelect); });
+  keySelect.addEventListener("change", function () {
+    syncKey(keySelect, roomSelect);
+  });
+
+  roomSelect.addEventListener("change", function () {
+    syncKey(roomSelect, keySelect);
+  });
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -89,7 +95,8 @@ document.querySelectorAll(".record-form").forEach(function (form) {
       message.textContent = "Expected return must be after the borrowed time.";
     } else {
       message.textContent = "";
-      showScreen("records");                
+      showScreen("records");
+    }
   });
 });
 
